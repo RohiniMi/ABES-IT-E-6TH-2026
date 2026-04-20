@@ -7,18 +7,19 @@ import {
 } from "./controller/crud.js";
 import dbConnect from "./config/db.js";
 import routeErrorHandler from "./middleware/routeErrorHandler.js";
-
+import cors from "cors";
+import { errorHandler } from "./middleware/errorHandler.js";
 const app = express();
 const PORT = 8800;
 
 dbConnect();
 app.use(express.json()); //middleware
-
+app.use(cors());
 app.get("/users", readUsers);
 app.post("/users", createUser);
 app.put("/users/:email", updateUser);
 app.delete("/users/:email", deleteUser);
-
+app.use(errorHandler);
 app.use(routeErrorHandler); //middleware for route error
 
 app.listen(PORT, () => console.log(`server is running at http://localhost:${PORT}`));
